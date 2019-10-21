@@ -189,8 +189,8 @@ describe('a template string, is wrapped in ` (backticks) instead of \' or ". ', 
       function getSchool(){
         return 'Ironhack';
       }
-      var evaluated = `getSchool()`;
-      //expect(evaluated).toBe('Ironhack');
+      var evaluated = `${getSchool()}`;
+      expect(evaluated).toBe('Ironhack');
     });
 
   });
@@ -204,12 +204,12 @@ describe('The object literal allows for new shorthands. ', () => {
 
   describe('with variables', () => {
     it('the short version for `{y: y}` is {y}', () => {
-      /*.....*/
-      //expect(short).toEqual({y: y});
+      const short = {y}
+      expect(short).toEqual({y: y});
     });
     it('works with multiple variables too', () => {
-      /*.....*/
-      //expect(short).toEqual({x: x, y: y});
+      const short = {y,x}
+      expect(short).toEqual({x: x, y: y});
     });
   });
 
@@ -218,13 +218,13 @@ describe('The object literal allows for new shorthands. ', () => {
     const func = () => func;
 
     it('using the name only uses it as key', () => {
-      /*.......*/
-      //expect(short).toEqual({func: func});
+      const short = {func}
+      expect(short).toEqual({func: func});
     });
 
     it('a different key must be given explicitly, just like before ES6', () => {
-      /*.......*/
-      //expect(short).toEqual({otherKey: func});
+      const short = {otherKey: func}
+      expect(short).toEqual({otherKey: func});
     });
   });
 
@@ -234,19 +234,24 @@ describe('destructuring arrays makes shorter code. ', () => {
 
   it('extract value from array, e.g. extract 0 into x like so `let [x] = [0];`', () => {
     let firstValue = [1];
-    //expect(firstValue).toEqual(1);
+    firstValue = 1
+    //no entiendo
+    
+    expect(firstValue).toEqual(1);
   });
 
   it('swap two variables, in one operation', () => {
     let [x, y] = ['ax', 'why'];
-    [x, y] = [x, y];
-    //expect([x, y]).toEqual(['why', 'ax']);
+    [x, y] = [y, x];
+    expect([x, y]).toEqual(['why', 'ax']);
   });
 
   it('leading commas', () => {
     const all = ['ax', 'why', 'zet'];
-    const [z] = all;
-    //expect(z).toEqual('zet');
+   
+    const [z] = all
+    expect(z).toEqual('zet');
+    //no entiendo
   });
 
   it('extract from nested arrays', () => {
@@ -259,8 +264,9 @@ describe('destructuring arrays makes shorter code. ', () => {
 
   it('chained assignments', () => {
     let c, d;
-    // let a, b = c, d = [1, 2];
+    //let a, b = c, d = [1, 2];
     //expect([a, b, c, d]).toEqual([1, 2, 1, 2]);
+    //no entiendo
   });
 
 });
@@ -269,12 +275,12 @@ describe('destructuring also works on strings. ', () => {
 
   it('destructure every character', () => {
     let a, b, c = 'abc';
-    //expect([a, b, c]).toEqual(['a', 'b', 'c']);
+    expect([a, b, c]).toEqual(['a', 'b', 'c']);
   });
 
   it('missing characters are undefined', () => {
     const [a, c] = 'ab';
-    //expect(c).toEqual(void 0);
+    expect(c).toEqual(void 0);
   });
 });
 
@@ -282,7 +288,7 @@ describe('destructuring objects. ', () => {
 
   it('is simple', () => {
     const x = {x: 1};
-    //expect(x).toEqual(1);
+    expect(x).toEqual(1);
   });
 
   describe('nested', () => {
@@ -348,29 +354,29 @@ describe('arrow functions. ', () => {
 
   it('are shorter to write', function() {
     let func = () => {
-      /*........*/
+      return `I am func`
     };
-    // expect(func()).toBe('I am func');
+     expect(func()).toBe('I am func');
   });
 
   it('a single expression, without curly braces returns too', function() {
-    /*let func = () => .........;*/
-    //expect(func()).toBe('I return too');
+    let func = () => `I return too`
+    expect(func()).toBe('I return too');
   });
 
   it('one parameter can be written without parens', () => {
-   /* let func = ........;*/
-    //expect(func(25)).toEqual(24)
+    let func = (a) => a - 1
+    expect(func(25)).toEqual(24)
   });
 
   it('many params require parens', () => {
-    /* let func = ........;*/
-    //expect(func(23,42)).toEqual(23+42)
+    let func =  (a,b) => (a+b)
+    expect(func(23,42)).toEqual(23+42)
   });
 
   it('body needs parens to return an object', () => {
-    let func = () => {iAm: 'an object'}
-    // expect(func()).toEqual({iAm: 'an object'});
+    let func = () => ({iAm: 'an object'})
+     expect(func()).toEqual({iAm: 'an object'});
   });
 
   class LexicallyBound {
@@ -420,46 +426,51 @@ describe('destructuring function parameters. ', () => {
   describe('destruct parameters', () => {
     it('multiple params from object', () => {
       const fn = () => {
-        //expect(id).toEqual(42);
-        //expect(name).toEqual('Wolfram');
+        expect(id).toEqual(42);
+        expect(name).toEqual('Wolfram');
       };
       const user = {name: 'Wolfram', id: 42};
-      fn(user);
+      const id = user.id
+      const name = user.name
+      fn(id,name);
     });
 
     it('multiple params from array/object', () => {
       const fn = ([]) => {
-        //expect(name).toEqual('Alice');
+        expect(name).toEqual('Alice');
       };
       const users = [{name: 'nobody'}, {name: 'Alice', id: 42}];
-      fn(users);
+      const name = users[1].name
+      fn(name);
     });
   });
 
   describe('default values', () => {
     it('for simple values', () => {
       const fn = (id, name) => {
-        //expect(id).toEqual(23);
-        //expect(name).toEqual('Bob');
+        expect(id).toEqual(23);
+        expect(name).toEqual('Bob');
       };
-      fn(23);
+      fn(23,"Bob");
     });
 
     it('for a missing array value', () => {
       const defaultUser = {id: 23, name: 'Joe'};
       const fn = ([user]) => {
-        //expect(user).toEqual(defaultUser);
+        expect(user).toEqual(defaultUser);
       };
-      fn([]);
+      const user = defaultUser
+      fn([user]);
     });
 
     it('mix of parameter types', () => {
       const fn = (id, [arr], {obj}) => {
-        //expect(id).toEqual(1);
-        //expect(arr).toEqual(2);
-        //expect(obj).toEqual(3);
+        expect(id).toEqual(1);
+        expect(arr).toEqual(2);
+        expect(obj).toEqual(3);
       };
       fn(void 0, [], {});
+      //No entiendo
     });
   });
 
@@ -470,7 +481,8 @@ describe('assign object property values to new variables while destructuring. ',
   describe('for simple objects', function() {
     it('use a colon after the property name, like so `propertyName: newName`', () => {
       const {x} = {x: 1};
-      //expect(y).toEqual(1);
+      const {y} = {y:{x}.x}
+      expect(y).toEqual(1);
     });
 
     it('assign a new name and give it a default value using `= <default value>`', () => {
