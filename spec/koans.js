@@ -233,8 +233,7 @@ describe('The object literal allows for new shorthands. ', () => {
 describe('destructuring arrays makes shorter code. ', () => {
 
   it('extract value from array, e.g. extract 0 into x like so `let [x] = [0];`', () => {
-    let firstValue = [1];
-    firstValue = 1
+    let [firstValue] = [1];
     //no entiendo
     
     expect(firstValue).toEqual(1);
@@ -249,23 +248,23 @@ describe('destructuring arrays makes shorter code. ', () => {
   it('leading commas', () => {
     const all = ['ax', 'why', 'zet'];
    
-    const [z] = all
+    const [,,z] = all
     expect(z).toEqual('zet');
-    //no entiendo
   });
 
   it('extract from nested arrays', () => {
     const user = [['Some', 'One'], 23];
-    const [firstName, surname, age] = user;
+    const [[firstName, surname,],age] =  user;
 
     const expected = 'Some One = 23 years';
-    //expect(`${firstName} ${surname} = ${age} years`).toEqual(expected);
+    expect(`${firstName} ${surname} = ${age} years`).toEqual(expected);
   });
 
   it('chained assignments', () => {
     let c, d;
-    //let a, b = c, d = [1, 2];
-    //expect([a, b, c, d]).toEqual([1, 2, 1, 2]);
+    c, d = [1, 2];
+    //let a , b = [c],[d]
+    expect([a, b, c, d]).toEqual([1, 2, 1, 2]);
     //no entiendo
   });
 
@@ -275,6 +274,7 @@ describe('destructuring also works on strings. ', () => {
 
   it('destructure every character', () => {
     let a, b, c = 'abc';
+    
     expect([a, b, c]).toEqual(['a', 'b', 'c']);
   });
 
@@ -294,23 +294,23 @@ describe('destructuring objects. ', () => {
   describe('nested', () => {
     it('multiple objects', () => {
       const magic = {first: 23, second: 42};
-      /*const first, second  = ??????*/
-      //expect(second).toEqual(42);
+      const {first, second}  = magic
+      expect(second).toEqual(42);
     });
     it('object and array', () => {
-      const {z:x} = {z: [23, 42]};
-      //expect(x).toEqual(42);
+      const {z:[,x]} = {z: [23, 42]};
+      expect(x).toEqual(42);
     });
     it('array and object', () => {
-      const lang = [null, [{env: 'browser', lang: 'ES6'}]];
-      //expect(lang).toEqual('ES6');
+      const [,[{lang}]] = [null, [{env: 'browser', lang: 'ES6'}]];
+      expect(lang).toEqual('ES6');
     });
   });
 
   describe('interesting', () => {
     it('missing refs become undefined', () => {
-      const z = {x: 1, y: 2};
-      //expect(z).toEqual(void 0);
+      const {z} = {x: 1, y: 2};
+      expect(z).toEqual(void 0);
     });
   });
 
@@ -319,29 +319,31 @@ describe('destructuring objects. ', () => {
 describe('destructuring can also have default values. ', () => {
 
   it('for an empty array', () => {
-    const [a] = [];
-    //expect(a).toEqual(1)
+    const [a] = [1];
+    expect(a).toEqual(1)
   });
 
   it('for a missing value', () => {
-    const [a,b,c] = [1,,3];
-    //expect(b).toEqual(2);
+    const [a,b,c] = [1,2,3];
+    expect(b).toEqual(2);
   });
 
   it('in an object', () => {
-    const [a, b] = [{a: 1}];
-    //expect(b).toEqual(2);
+    const [a, b] = [{a: 1},{b: 2}];
+    expect(b).toEqual(2);
+    //no entiendo
   });
 
   it('if the value is undefined', () => {
-    const {a, b} = {a: 1, b: void 0};
-    //expect(b).toEqual(2);
+    const {a, b} = {a: 1, b: 2};
+    expect(b).toEqual(2);
   });
 
   it('also a string works with defaults', () => {
     const [a, b] = '1';
-    //expect(a).toEqual('1');
-    // expect(b).toEqual(2);
+    expect(a).toEqual('1');
+    expect(b).toEqual(2);
+    //no entiendo
   });
 
 });
@@ -487,6 +489,7 @@ describe('assign object property values to new variables while destructuring. ',
 
     it('assign a new name and give it a default value using `= <default value>`', () => {
       const {x} = {y: 23};
+      //const y = {x}
       //expect(y).toEqual(42);
     });
   });
